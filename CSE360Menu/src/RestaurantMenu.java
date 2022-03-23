@@ -49,18 +49,23 @@ public class RestaurantMenu {
         panel.setSize(100,50);
         frame.add(panel);
         
+
+        // creating a user object with name Eric
+		User user = new User();
+		user.setName("Eric");
+		
+		
         // create a button, this will sit inside the panel
 		button = new JButton("I am a button");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,"Hello World");
+				JOptionPane.showMessageDialog(null,user.getName());
 			}
 		});
 		
 		button.setBounds(30, 30, 10, 10);
 		
 		panel.add(button);
-		
 	}
 
 }
