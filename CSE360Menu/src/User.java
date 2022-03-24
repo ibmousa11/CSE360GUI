@@ -7,7 +7,7 @@ public class User {
 	public String phone;
 	
 	public User() {
-		
+		User user = new User();
 	}
 	
 	public User(String username, String password) {
