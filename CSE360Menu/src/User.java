@@ -6,8 +6,6 @@ public class User {
 	public String name;
 	public String phone;
 	
-	//changes are going to be made
-	
 	public User() {
 		
 	}
