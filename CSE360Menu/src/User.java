@@ -7,11 +7,11 @@ public class User {
 	public String phone;
 	
 	public User() {
-		
+		User user = new User();  //creating constructor
 	}
 	
 	public User(String username, String password) {
-		this.username = username;
+		this.username = username;		//this is setting the username
 		this.password = password;
 	}
 	
