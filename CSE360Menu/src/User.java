@@ -7,11 +7,7 @@ public class User {
 	public String phone;
 	
 	public User() {
-<<<<<<< HEAD
-		User user = new User();
-=======
-		//more changes
->>>>>>> branch 'dev' of https://github.com/ibmousa11/CSE360Menu.git
+		
 	}
 	
 	public User(String username, String password) {
