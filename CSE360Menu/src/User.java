@@ -8,6 +8,7 @@ public class User {
 	
 	public User() {
 		User user = new User();  //creating constructor
+		// my changes
 	}
 	
 	public User(String username, String password) {
