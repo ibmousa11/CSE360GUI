@@ -50,6 +50,7 @@ public class RestaurantMenu {
         menuFrame = new JFrame();
         menuFrame.setSize(480,640);
         menuFrame.setVisible(false);
+        menuFrame.setLayout(null);
         
         // create a Panel that sits inside the frame
         JPanel panel = new JPanel();
@@ -65,19 +66,30 @@ public class RestaurantMenu {
 		//creating owner object
 		Owner owner = new Owner();
 		owner.setName("I am the owner");
-		//owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
+		owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
 		
 		//Customizing the frame that holds the menu
+		JLabel item0 = new JLabel(owner.menu[0]);
+		JLabel item1 = new JLabel(owner.menu[1]);
+		JLabel item2 = new JLabel(owner.menu[2]);
+		JLabel price0 = new JLabel(Double.toString(owner.prices[0]));
+		JLabel price1 = new JLabel(Double.toString(owner.prices[1]));
+		JLabel price2 = new JLabel(Double.toString(owner.prices[2]));
 		
-		JLabel item = new JLabel("Buffalo Chicken");
-//		JLabel item0 = new JLabel(owner.menu[0]);
-//		JLabel item1 = new JLabel(owner.menu[1]);
-//		JLabel item2 = new JLabel(owner.menu[2]);
-//		JLabel price0 = new JLabel(Double.toString(owner.prices[0]));
-//		JLabel price1 = new JLabel(Double.toString(owner.prices[1]));
-//		JLabel price2 = new JLabel(Double.toString(owner.prices[2]));
+		//setting properties for spacing of menu components
+		item0.setBounds(10, 10, 100, 20);
+		item1.setBounds(10, 40, 100, 20);
+		item2.setBounds(10, 70, 100, 20);
+		price0.setBounds(130, 10, 100, 20);
+		price1.setBounds(130, 40, 100, 20);
+		price2.setBounds(130, 70, 100, 20);
 		
-		menuFrame.add(item);
+		menuFrame.add(item0);
+		menuFrame.add(item1);
+		menuFrame.add(item2);
+		menuFrame.add(price0);
+		menuFrame.add(price1);
+		menuFrame.add(price2);
 		
 		
         // create a button, this will sit inside the panel

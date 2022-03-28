@@ -1,9 +1,9 @@
 
 public class Owner {
 	
-	public String[] menu;
+	public String[] menu = new String[10];
 	
-	public double[] prices; //indexes of menu array and prices array match up
+	public double[] prices = new double[10]; //indexes of menu array and prices array match up
 	
 	private String ownerName;
 	
