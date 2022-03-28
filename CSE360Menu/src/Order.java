@@ -7,9 +7,9 @@ public class Order {
 	public double totalPrice;
 	
 	public Order() {
-		orderStatus = "Order Received by Restaurant";
-		cart = new ArrayList<FoodItem>();
-		totalPrice = 0.00;
+		this.orderStatus = "Order Received by Restaurant";
+		this.cart = new ArrayList<FoodItem>();
+		this.totalPrice = 0.00;
 	}
 	
 	public int getOrderId() {
@@ -25,23 +25,35 @@ public class Order {
 	}
 	
 	public void setOrderStatus(String newOrderStatus) {
-		
+		orderStatus = newOrderStatus;
+	}
+	
+	public boolean addToOrder(FoodItem foodItem) {
+		boolean result = cart.add(foodItem);
+		updatePrice();
+		return result;
+	}
+	
+	public boolean removeFromOrder(FoodItem foodItem) {
+		boolean result = cart.remove(foodItem);
+		updatePrice();
+		return result;
 	}
 	
 	public double getTotalPrice() {
 		return totalPrice;
 	}
 	
-	public void updatePrice() {
+	private void updatePrice() {
 		// for each item in the cart, get the price
-		for(int i = 0; i < cart.size(); i++) {
-			totalPrice += cart.get(i).getPrice();
-		}
+		totalPrice = 0.00;
+		cart.forEach((foodItem) -> totalPrice += foodItem.getPrice());
 	}
 	
-	
-	public String printOrder() {
-		
+	public void printOrder() {
+		System.out.print("Current order: {");
+		cart.forEach((foodItem) -> System.out.print(foodItem.getName() + "(" + foodItem.getPrice() + ")" + ", "));
+		System.out.println(" }");
 	}
 	
 	
