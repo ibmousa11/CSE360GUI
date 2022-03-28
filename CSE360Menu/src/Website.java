@@ -1,9 +1,12 @@
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,31 +66,42 @@ public class Website extends JFrame{
 		
 		//creating the menu section
 		JPanel menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
-		menuPanel.setLayout(new GridLayout(1,1));
+		
 		menuPanel.setSize(400,500);
 		menuPanel.setLocation(50, 300);
+		//menuPanel.setLayout(new GridLayout(2,2,0,0));
 		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
+		//menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		add(menuPanel);
+		
 		
 		//adding menu items into the menu
 		Vector<String> menuItems = new Vector<String>(1);
 		menuItems.add("Beef and Cheese");
 		JLabel firstItem = new JLabel(menuItems.get(0));
 		firstItem.setSize(150,30);
+		firstItem.setLocation(10,10);
 		menuPanel.add(firstItem);
 		
 		menuItems.add("Buffalo Chicken");
 		JLabel secondItem = new JLabel(menuItems.get(1));
-		secondItem.setSize(150,30);
+		secondItem.setSize(100,100);
+		secondItem.setLocation(10,100);
 		menuPanel.add(secondItem);
 		
-//		JButton hello = new JButton("hello");
-//		hello.setSize(30,30);
-//		menuPanel.add(hello);
-		
-		
-		 
+		try{
+			ImageIcon img = new ImageIcon(getClass().getResource("beefAndCheesePic.jpg"));
+			JLabel display = new JLabel(img);
+			//display.setSize(300, 100);
+			menuPanel.add(display);
+		}
+		catch(Exception e){
+			System.out.println("Image cannot be found");
+		}
+
+	
+
+	
 		
 	}
 }
