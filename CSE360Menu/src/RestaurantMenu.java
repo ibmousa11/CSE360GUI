@@ -7,7 +7,10 @@ import javax.swing.*;
 public class RestaurantMenu {
 
 	private JFrame frame;
-	private JButton button;
+	private JFrame menuFrame;
+	private JButton userButton;
+	private JButton ownerButton;
+	private JButton menuButton;
 
 	/**
 	 * Launch the application.
@@ -37,16 +40,21 @@ public class RestaurantMenu {
 	 */
 	private void initialize() {
 		// create a frame, this is the window of the application
-		frame = new JFrame();
+		frame = new JFrame("SubZilla");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(480,640);
         frame.setVisible(true);
         
+        menuFrame = new JFrame();
+        menuFrame.setSize(480,640);
+        menuFrame.setVisible(false);
+        
         // create a Panel that sits inside the frame
         JPanel panel = new JPanel();
-        panel.setSize(100,50);
+        panel.setLayout(null);
+        panel.setSize(480,640);
         frame.add(panel);
         
 
@@ -54,18 +62,59 @@ public class RestaurantMenu {
 		User user = new User();
 		user.setName("Eric");
 		
+		//creating owner object
+		Owner owner = new Owner();
+		owner.setName("I am the owner");
+		//owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
+		
+		//Customizing the frame that holds the menu
+		
+		JLabel item = new JLabel("Buffalo Chicken");
+//		JLabel item0 = new JLabel(owner.menu[0]);
+//		JLabel item1 = new JLabel(owner.menu[1]);
+//		JLabel item2 = new JLabel(owner.menu[2]);
+//		JLabel price0 = new JLabel(Double.toString(owner.prices[0]));
+//		JLabel price1 = new JLabel(Double.toString(owner.prices[1]));
+//		JLabel price2 = new JLabel(Double.toString(owner.prices[2]));
+		
+		menuFrame.add(item);
+		
 		
         // create a button, this will sit inside the panel
-		button = new JButton("I am a button");
-		button.addActionListener(new ActionListener() {
+		userButton = new JButton("Click if you are a customer");
+		ownerButton = new JButton("Click if you are the owner");
+		menuButton = new JButton("Menu");
+		
+		userButton.setBounds(50, 30, 180, 30);
+		ownerButton.setBounds(250, 30, 180, 30);
+		menuButton.setBounds(200,80,80,30);
+		
+		panel.add(userButton);
+		panel.add(ownerButton);
+		panel.add(menuButton);
+		
+		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,user.getName());
 			}
 		});
 		
-		button.setBounds(30, 30, 10, 10);
 		
-		panel.add(button);
+		ownerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, owner.getName());
+			}
+		});
+		
+		menuButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menuFrame.setVisible(true);
+			}
+		});
+		
+		
+		
+		
 	}
 
 }

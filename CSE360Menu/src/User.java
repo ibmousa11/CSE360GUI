@@ -6,6 +6,7 @@ public class User {
 	private String password;
 	public String name;
 	public String phone;
+	public boolean hasCoupon = false;
 	
 	public User() {
 		
