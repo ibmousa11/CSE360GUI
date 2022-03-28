@@ -10,6 +10,10 @@ public class FoodItem {
 		this.name = name;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public double getPrice() {
 		return price;
 	}

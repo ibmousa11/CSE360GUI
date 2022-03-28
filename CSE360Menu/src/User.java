@@ -4,7 +4,6 @@ public class User {
 	
 	private String username;
 	private String password;
-	public String name;
 	public String phone;
 	public boolean hasCoupon = false;
 	
@@ -15,14 +14,15 @@ public class User {
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
+		this.phone = "";
 	}
 	
 	public String getName() {
-		return name;
+		return username;
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		this.username = name;
 	}
 	
 	public String getPhone() {

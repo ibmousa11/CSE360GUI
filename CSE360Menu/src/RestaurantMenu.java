@@ -16,6 +16,19 @@ public class RestaurantMenu {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		// example for adding a customer, adding fooditems to menu, then adding
+		// fooditems to a users order and printing the order, price updates accordingly
+		Customer newCustomer = new Customer("yaneric", "password");
+		FoodItem sandwich = new FoodItem("Sandwich",8.99);
+		FoodItem sandwich2 = new FoodItem("Italian Sub",7.99);
+		newCustomer.setPhone("5034736866");
+		newCustomer.addItem(sandwich);
+		newCustomer.addItem(sandwich2);
+		newCustomer.orders[0].printOrder();
+		System.out.println("Current total: " + newCustomer.orders[0].getTotalPrice());
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
