@@ -24,12 +24,18 @@ public class Owner extends User {
 		
 	}
 	
-	public void changePrice(int itemIndex) {
-		
+	public void changePrice(ArrayList<FoodItem> menu, String foodItem, double price) {
+		for(FoodItem item : menu) {
+			if(item.getName().equals(foodItem)) {
+				item.setPrice(price);
+			}
+		}
 	}
 	
-	public FoodItem createFoodItem(String name, double price) {
-		return new FoodItem(name, price);
+	public FoodItem createFoodItem(ArrayList<FoodItem> menu, String name, double price) {
+		FoodItem newItem = new FoodItem(name, price);
+		menu.add(newItem);
+		return newItem;
 	}
 	
 	public void giveCoupon(int customerID){

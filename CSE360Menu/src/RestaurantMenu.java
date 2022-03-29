@@ -1,6 +1,10 @@
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -124,11 +128,11 @@ public class RestaurantMenu {
 		/* --------------------------------------- Menu Panel ------------------------------------- */
 		
 		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
-		menuPanel.setSize(400,500);
+		menuPanel.setSize(500,500);
 		menuPanel.setLocation(50, 300);
-		//menuPanel.setLayout(new GridLayout(2,2,0,0));
+		menuPanel.setLayout(new GridBagLayout());
 		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		//menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
+		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		homePanel.add(menuPanel);
 
         // creating a user object with name Eric
@@ -141,8 +145,10 @@ public class RestaurantMenu {
 		owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
 		/* --------------------------------------------------------------------------------------- */
 		
-		menuItems.add(owner.createFoodItem("Beef and Cheese", 8.99));
-		menuItems.add(owner.createFoodItem("Buffalo Chicken", 7.99));
+		owner.createFoodItem(menuItems,"Beef and Cheese", 8.99);
+		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99);
+		
+		owner.changePrice(menuItems,"Beef and Cheese",6.99);
 		
 		// execute create menu
 		renderMenu();
@@ -178,11 +184,13 @@ public class RestaurantMenu {
 		
 		// for each food item in the array
 			// create respective labels and add to the menu, dynamically adds menu items
+		menuPanel.removeAll();
 		menuItems.forEach((FoodItem) -> {
-			JPanel newItem = new JPanel();
+			JButton newItem = new JButton();
+			newItem.setLayout(new FlowLayout());
 			JLabel newLabel = new JLabel(FoodItem.getName());
 			JLabel newPrice = new JLabel(String.valueOf(FoodItem.getPrice()));
-			newItem.setSize(150,30);
+			newItem.setSize(100,100);
 			newItem.add(newLabel);
 			newItem.add(newPrice);
 			menuPanel.add(newItem);
