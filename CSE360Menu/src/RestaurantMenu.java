@@ -1,16 +1,19 @@
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class RestaurantMenu {
 
 	private JFrame frame;
-	private JFrame menuFrame;
-	private JButton userButton;
-	private JButton ownerButton;
-	private JButton menuButton;
+	private JPanel homePanel;
+	private JPanel couponPanel;
+	private JPanel menuPanel;
+	private ArrayList<FoodItem> menuItems;
 
 	/**
 	 * Launch the application.
@@ -28,7 +31,6 @@ public class RestaurantMenu {
 		newCustomer.orders[0].printOrder();
 		System.out.println("Current total: " + newCustomer.orders[0].getTotalPrice());
 		
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -45,6 +47,11 @@ public class RestaurantMenu {
 	 * Create the application.
 	 */
 	public RestaurantMenu() {
+		menuItems = new ArrayList<FoodItem>();
+		
+		//what we can do is before we use initialize() we present user with login
+		//window that will take info and process it before we even open the menu
+		
 		initialize();
 	}
 
@@ -52,25 +59,77 @@ public class RestaurantMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		
+		/* ---------------------------------- Window Frame -------------------------------------- */
 		// create a frame, this is the window of the application
 		frame = new JFrame("SubZilla");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(480,640);
+        frame.setSize(1920,1080);
         frame.setVisible(true);
+        /* --------------------------------------------------------------------------------------- */
+      
         
-        menuFrame = new JFrame();
-        menuFrame.setSize(480,640);
-        menuFrame.setVisible(false);
-        menuFrame.setLayout(null);
+        
+        /* ---------------------------------- Home Panel ----------------------------------------- */
         
         // create a Panel that sits inside the frame
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        panel.setSize(480,640);
-        frame.add(panel);
+        homePanel = new JPanel();
+        homePanel.setLayout(null);
+        homePanel.setSize(1920,1080);
+        frame.add(homePanel);
         
+        //creating the title
+		JLabel title = new JLabel("SubZilla");
+		title.setSize(290, 70);
+		title.setFont(new Font("Impact", Font.PLAIN, 80));
+		homePanel.add(title);
+		title.setLocation(815, 30);
+		
+		/* ----------------------------------------------------------------------------------------- */
+		
+		
+		
+		/* -------------------------------------- Cart Button -------------------------------------- */
+		JButton viewCartButton = new JButton("View Cart");
+		viewCartButton.setSize(100,50); 
+		viewCartButton.setLocation(1700, 900);
+		homePanel.add(viewCartButton);
+		/* ----------------------------------------------------------------------------------------- */
+
+		
+		/* -------------------------------------- Coupon Panel ------------------------------------- */
+		couponPanel = new JPanel();
+		couponPanel.setSize(400, 600);
+		couponPanel.setLocation(1400,200);
+		couponPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		homePanel.add(couponPanel);
+		
+		JLabel couponTitle = new JLabel("Rewards Program");
+		couponTitle.setSize(150,30);
+		couponTitle.setLocation(125, 10);
+		couponTitle.setHorizontalAlignment(JLabel.CENTER);
+		couponPanel.add(couponTitle);
+		
+		JLabel couponInfo = new JLabel("BUY TEN SUBS, GET ONE FREE");
+		couponInfo.setSize(250,30);
+		couponInfo.setLocation(75, 125);
+		couponInfo.setHorizontalAlignment(JLabel.CENTER);	//centers label inside of the label container
+		couponPanel.add(couponInfo);
+		/* ---------------------------------------------------------------------------------------- */
+		
+		
+		/* --------------------------------------- Menu Panel ------------------------------------- */
+		
+		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
+		menuPanel.setSize(400,500);
+		menuPanel.setLocation(50, 300);
+		//menuPanel.setLayout(new GridLayout(2,2,0,0));
+		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		//menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
+		homePanel.add(menuPanel);
 
         // creating a user object with name Eric
 		User user = new User();
@@ -80,43 +139,16 @@ public class RestaurantMenu {
 		Owner owner = new Owner();
 		owner.setName("I am the owner");
 		owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
+		/* --------------------------------------------------------------------------------------- */
 		
-		//Customizing the frame that holds the menu
-		JLabel item0 = new JLabel(owner.menu[0]);
-		JLabel item1 = new JLabel(owner.menu[1]);
-		JLabel item2 = new JLabel(owner.menu[2]);
-		JLabel price0 = new JLabel(Double.toString(owner.prices[0]));
-		JLabel price1 = new JLabel(Double.toString(owner.prices[1]));
-		JLabel price2 = new JLabel(Double.toString(owner.prices[2]));
+		menuItems.add(owner.createFoodItem("Beef and Cheese", 8.99));
+		menuItems.add(owner.createFoodItem("Buffalo Chicken", 7.99));
 		
-		//setting properties for spacing of menu components
-		item0.setBounds(10, 10, 100, 20);
-		item1.setBounds(10, 40, 100, 20);
-		item2.setBounds(10, 70, 100, 20);
-		price0.setBounds(130, 10, 100, 20);
-		price1.setBounds(130, 40, 100, 20);
-		price2.setBounds(130, 70, 100, 20);
+		// execute create menu
+		renderMenu();
 		
-		menuFrame.add(item0);
-		menuFrame.add(item1);
-		menuFrame.add(item2);
-		menuFrame.add(price0);
-		menuFrame.add(price1);
-		menuFrame.add(price2);
-		
-		
-        // create a button, this will sit inside the panel
-		userButton = new JButton("Click if you are a customer");
-		ownerButton = new JButton("Click if you are the owner");
-		menuButton = new JButton("Menu");
-		
-		userButton.setBounds(50, 30, 180, 30);
-		ownerButton.setBounds(250, 30, 180, 30);
-		menuButton.setBounds(200,80,80,30);
-		
-		panel.add(userButton);
-		panel.add(ownerButton);
-		panel.add(menuButton);
+        // button listener template
+		/*
 		
 		userButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -135,11 +167,26 @@ public class RestaurantMenu {
 			public void actionPerformed(ActionEvent e) {
 				menuFrame.setVisible(true);
 			}
-		});
-		
-		
-		
-		
+		});*/
 	}
-
+	
+	
+	// create menu should read the CSV file with food items and then add to menu
+	private void renderMenu() {
+		// while there are still lines to read food items
+			// read the food item and add it to the array
+		
+		// for each food item in the array
+			// create respective labels and add to the menu, dynamically adds menu items
+		menuItems.forEach((FoodItem) -> {
+			JPanel newItem = new JPanel();
+			JLabel newLabel = new JLabel(FoodItem.getName());
+			JLabel newPrice = new JLabel(String.valueOf(FoodItem.getPrice()));
+			newItem.setSize(150,30);
+			newItem.add(newLabel);
+			newItem.add(newPrice);
+			menuPanel.add(newItem);
+		});
+	}
+	
 }
