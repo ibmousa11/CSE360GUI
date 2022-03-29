@@ -1,9 +1,6 @@
+import java.util.ArrayList;
 
-public class Owner {
-	
-	public String[] menu = new String[10];
-	
-	public double[] prices = new double[10]; //indexes of menu array and prices array match up
+public class Owner extends User {
 	
 	private String ownerName;
 	
@@ -16,18 +13,13 @@ public class Owner {
 	}
 	
 	public void setName(String name) {
-		ownerName = name;
+		this.ownerName = name;
 	}
 	
 	public void initializeMenu() {
-		menu[0] = "Beef and Cheese";
-		menu[1] = "BLT";
-		menu[2] = "Buffalo Chicken";
 		
-		prices[0] = 7.99;
-		prices[1] = 8.99;
-		prices[2] = 9.99;
 	}
+	
 	public void deliverFood(int customerID) {
 		
 	}
@@ -36,12 +28,8 @@ public class Owner {
 		
 	}
 	
-	public String getMenuItem(int index) {
-		return menu[index];
-	}
-	
-	public void createFoodItem(String name, double price) {
-		
+	public FoodItem createFoodItem(String name, double price) {
+		return new FoodItem(name, price);
 	}
 	
 	public void giveCoupon(int customerID){
