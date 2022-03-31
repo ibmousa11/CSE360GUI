@@ -1,19 +1,19 @@
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import java.awt.*;
 import javax.swing.*;
 
 public class RestaurantMenu {
 
 	private JFrame frame;
+	private JFrame loginFrame;
 	private JPanel homePanel;
 	private JPanel couponPanel;
 	private JPanel menuPanel;
 	private ArrayList<FoodItem> menuItems;
+	private Boolean enterBool;
 
 	/**
 	 * Launch the application.
@@ -59,7 +59,11 @@ public class RestaurantMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
+		/*
+		Boolean enterBool = false;
+		loginMenu();
+		if(enterBool == true) {
+		*/
 		
 		/* ---------------------------------- Window Frame -------------------------------------- */
 		// create a frame, this is the window of the application
@@ -122,14 +126,37 @@ public class RestaurantMenu {
 		
 		
 		/* --------------------------------------- Menu Panel ------------------------------------- */
-		
+		/*
+		AutoCompleteDecorator decorator;
+		JComboBox combobox;
+		for (int i = menuItems.size(); i--;)
+		combobox = new JComboBox(new Object[]{FoodItem.getName()});
+		AutoCompleteDecorator.decorate(combobox);
+		menuPanel.add(combobox);
+		*/
 		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
 		menuPanel.setSize(400,500);
 		menuPanel.setLocation(50, 300);
+		
+		
 		//menuPanel.setLayout(new GridLayout(2,2,0,0));
 		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		//menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		homePanel.add(menuPanel);
+		/* --------------------------------------- Search Bar -------------------------------------- */
+		
+		/*
+		JPanel search = new JPanel();
+		search.setSize(400,400);
+		search.setLocation(50,350);
+		search.setLayout(new FlowLayout());
+		search.add(combobox);
+		search.setVisible(true);
+		*/
+		
+
+		
+		/* ----------------------------------------------------------------------------------------- */
 
         // creating a user object with name Eric
 		User user = new User();
@@ -168,9 +195,8 @@ public class RestaurantMenu {
 				menuFrame.setVisible(true);
 			}
 		});*/
-	}
-	
-	
+		}
+	//}
 	// create menu should read the CSV file with food items and then add to menu
 	private void renderMenu() {
 		// while there are still lines to read food items
@@ -188,5 +214,43 @@ public class RestaurantMenu {
 			menuPanel.add(newItem);
 		});
 	}
-	
+	private void loginMenu() {
+		
+		loginFrame = new JFrame("Login");
+		JPanel loginPanel = new JPanel();
+		JLabel newLogin = new JLabel("LOGIN");
+		JTextField username = new JTextField(30);
+		JTextField password = new JTextField(30);
+		JButton enter = new JButton("Enter");
+		loginFrame.add(loginPanel);
+		loginPanel.add(username);
+		loginPanel.add(password);
+		
+		username.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = username.getText();
+				newLogin.setText(input);	
+			}
+		});
+		password.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = password.getText();
+				newLogin.setText(input);	
+			}
+		});
+		loginPanel.add(enter);
+		enter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = username.getText() + " " + password.getText();
+				newLogin.setText(input);	
+				enterBool = true;
+			}
+		});
+		
+		loginPanel.add(newLogin);
+		
+			
+		
+
+	}
 }
