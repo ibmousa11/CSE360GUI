@@ -26,6 +26,7 @@ public class RestaurantMenu {
 	
 	private JFrame cartFrame;
 	private JPanel cartPanel;
+	private JLabel subtotal;
 	
 
 	/**
@@ -123,14 +124,14 @@ public class RestaurantMenu {
         cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
         cartPanel.setLocation(1570,200);
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
-        cartPanel.setMaximumSize(new Dimension(300,1080));
+        //cartPanel.setMaximumSize(new Dimension(300,1080));
         homePanel.add(cartPanel,constraints);
         /* --------------------------------------------------------------------------------------- */
 		
 		
-		/* -------------------------------------- Cart Button -------------------------------------- */
+		/* -------------------------------------- Place Order Button -------------------------------------- */
         constraints.gridx = 2;
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         constraints.ipadx = 70;
         constraints.ipady = 50;
         constraints.anchor = GridBagConstraints.PAGE_END;
@@ -146,6 +147,15 @@ public class RestaurantMenu {
 				
 			}
 		});
+		
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        constraints.ipadx = 50;
+        constraints.ipady = 50;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.weighty = 0;
+        subtotal = new JLabel("Total: $" + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
+        homePanel.add(subtotal,constraints);
 		/* ----------------------------------------------------------------------------------------- */
 
 
@@ -274,6 +284,7 @@ public class RestaurantMenu {
 			cartItem.setAlignmentX(Component.CENTER_ALIGNMENT);
 			cartItem.setSize(40,30);
 			cartPanel.add(cartItem);
+			subtotal.setText("Total: $" + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
 			cartPanel.revalidate();
 		});
 	}
