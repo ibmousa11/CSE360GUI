@@ -59,144 +59,9 @@ public class RestaurantMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		/*
-		Boolean enterBool = false;
 		loginMenu();
-		if(enterBool == true) {
-		*/
 		
-		/* ---------------------------------- Window Frame -------------------------------------- */
-		// create a frame, this is the window of the application
-		frame = new JFrame("SubZilla");
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(1920,1080);
-        frame.setVisible(true);
-        /* --------------------------------------------------------------------------------------- */
-      
-        
-        
-        /* ---------------------------------- Home Panel ----------------------------------------- */
-        
-        // create a Panel that sits inside the frame
-        homePanel = new JPanel();
-        homePanel.setLayout(null);
-        homePanel.setSize(1920,1080);
-        frame.add(homePanel);
-        
-        //creating the title
-		JLabel title = new JLabel("SubZilla");
-		title.setSize(290, 70);
-		title.setFont(new Font("Impact", Font.PLAIN, 80));
-		homePanel.add(title);
-		title.setLocation(815, 30);
-		
-		/* ----------------------------------------------------------------------------------------- */
-		
-		
-		
-		/* -------------------------------------- Cart Button -------------------------------------- */
-		JButton viewCartButton = new JButton("View Cart");
-		viewCartButton.setSize(100,50); 
-		viewCartButton.setLocation(1700, 900);
-		homePanel.add(viewCartButton);
-		/* ----------------------------------------------------------------------------------------- */
-
-		
-		/* -------------------------------------- Coupon Panel ------------------------------------- */
-		couponPanel = new JPanel();
-		couponPanel.setSize(400, 600);
-		couponPanel.setLocation(1400,200);
-		couponPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		homePanel.add(couponPanel);
-		
-		JLabel couponTitle = new JLabel("Rewards Program");
-		couponTitle.setSize(150,30);
-		couponTitle.setLocation(125, 10);
-		couponTitle.setHorizontalAlignment(JLabel.CENTER);
-		couponPanel.add(couponTitle);
-		
-		JLabel couponInfo = new JLabel("BUY TEN SUBS, GET ONE FREE");
-		couponInfo.setSize(250,30);
-		couponInfo.setLocation(75, 125);
-		couponInfo.setHorizontalAlignment(JLabel.CENTER);	//centers label inside of the label container
-		couponPanel.add(couponInfo);
-		/* ---------------------------------------------------------------------------------------- */
-		
-		
-		/* --------------------------------------- Menu Panel ------------------------------------- */
-		/*
-		AutoCompleteDecorator decorator;
-		JComboBox combobox;
-		for (int i = menuItems.size(); i--;)
-		combobox = new JComboBox(new Object[]{FoodItem.getName()});
-		AutoCompleteDecorator.decorate(combobox);
-		menuPanel.add(combobox);
-		*/
-		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
-		menuPanel.setSize(400,500);
-		menuPanel.setLocation(50, 300);
-		
-		
-		//menuPanel.setLayout(new GridLayout(2,2,0,0));
-		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		//menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
-		homePanel.add(menuPanel);
-		/* --------------------------------------- Search Bar -------------------------------------- */
-		
-		/*
-		JPanel search = new JPanel();
-		search.setSize(400,400);
-		search.setLocation(50,350);
-		search.setLayout(new FlowLayout());
-		search.add(combobox);
-		search.setVisible(true);
-		*/
-		
-
-		
-		/* ----------------------------------------------------------------------------------------- */
-
-        // creating a user object with name Eric
-		User user = new User();
-		user.setName("Eric");
-		
-		//creating owner object
-		Owner owner = new Owner();
-		owner.setName("I am the owner");
-		owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
-		/* --------------------------------------------------------------------------------------- */
-		
-		menuItems.add(owner.createFoodItem("Beef and Cheese", 8.99));
-		menuItems.add(owner.createFoodItem("Buffalo Chicken", 7.99));
-		
-		// execute create menu
-		renderMenu();
-		
-        // button listener template
-		/*
-		
-		userButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,user.getName());
-			}
-		});
-		
-		
-		ownerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, owner.getName());
-			}
-		});
-		
-		menuButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuFrame.setVisible(true);
-			}
-		});*/
 		}
-	//}
 	// create menu should read the CSV file with food items and then add to menu
 	private void renderMenu() {
 		// while there are still lines to read food items
@@ -217,10 +82,15 @@ public class RestaurantMenu {
 	private void loginMenu() {
 		
 		loginFrame = new JFrame("Login");
+		loginFrame.setBounds(100, 100, 450, 300);
+		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginFrame.pack();
+		loginFrame.setSize(500,600);
+		loginFrame.setVisible(true);
 		JPanel loginPanel = new JPanel();
 		JLabel newLogin = new JLabel("LOGIN");
-		JTextField username = new JTextField(30);
-		JTextField password = new JTextField(30);
+		JTextField username = new JTextField(25);
+		JTextField password = new JTextField(25);
 		JButton enter = new JButton("Enter");
 		loginFrame.add(loginPanel);
 		loginPanel.add(username);
@@ -244,12 +114,141 @@ public class RestaurantMenu {
 				String input = username.getText() + " " + password.getText();
 				newLogin.setText(input);	
 				enterBool = true;
+				loginFrame.dispose();
+				/* ---------------------------------- Window Frame -------------------------------------- */
+				// create a frame, this is the window of the application
+				frame = new JFrame("SubZilla");
+				frame.setBounds(100, 100, 450, 300);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        frame.pack();
+		        frame.setSize(1920,1080);
+		        frame.setVisible(true);
+		        /* --------------------------------------------------------------------------------------- */
+		      
+		        
+		        
+		        /* ---------------------------------- Home Panel ----------------------------------------- */
+		        
+		        // create a Panel that sits inside the frame
+		        homePanel = new JPanel();
+		        homePanel.setLayout(null);
+		        homePanel.setSize(1920,1080);
+		        frame.add(homePanel);
+		        
+		        //creating the title
+				JLabel title = new JLabel("SubZilla");
+				title.setSize(290, 70);
+				title.setFont(new Font("Impact", Font.PLAIN, 80));
+				homePanel.add(title);
+				title.setLocation(815, 30);
+				
+				/* ----------------------------------------------------------------------------------------- */
+				
+				
+				
+				/* -------------------------------------- Cart Button -------------------------------------- */
+				JButton viewCartButton = new JButton("View Cart");
+				viewCartButton.setSize(100,50); 
+				viewCartButton.setLocation(1700, 900);
+				homePanel.add(viewCartButton);
+				/* ----------------------------------------------------------------------------------------- */
+
+				
+				/* -------------------------------------- Coupon Panel ------------------------------------- */
+				couponPanel = new JPanel();
+				couponPanel.setSize(400, 600);
+				couponPanel.setLocation(1400,200);
+				couponPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+				homePanel.add(couponPanel);
+				
+				JLabel couponTitle = new JLabel("Rewards Program");
+				couponTitle.setSize(150,30);
+				couponTitle.setLocation(125, 10);
+				couponTitle.setHorizontalAlignment(JLabel.CENTER);
+				couponPanel.add(couponTitle);
+				
+				JLabel couponInfo = new JLabel("BUY TEN SUBS, GET ONE FREE");
+				couponInfo.setSize(250,30);
+				couponInfo.setLocation(75, 125);
+				couponInfo.setHorizontalAlignment(JLabel.CENTER);	//centers label inside of the label container
+				couponPanel.add(couponInfo);
+				/* ---------------------------------------------------------------------------------------- */
+				
+				
+				/* --------------------------------------- Menu Panel ------------------------------------- */
+				/*
+				AutoCompleteDecorator decorator;
+				JComboBox combobox;
+				for (int i = menuItems.size(); i--;)
+				combobox = new JComboBox(new Object[]{FoodItem.getName()});
+				AutoCompleteDecorator.decorate(combobox);
+				menuPanel.add(combobox);
+				*/
+				menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
+				menuPanel.setSize(400,500);
+				menuPanel.setLocation(50, 300);
+				
+				
+				//menuPanel.setLayout(new GridLayout(2,2,0,0));
+				menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+				//menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
+				homePanel.add(menuPanel);
+				/* --------------------------------------- Search Bar -------------------------------------- */
+				
+				/*
+				JPanel search = new JPanel();
+				search.setSize(400,400);
+				search.setLocation(50,350);
+				search.setLayout(new FlowLayout());
+				search.add(combobox);
+				search.setVisible(true);
+				*/
+				
+
+				
+				/* ----------------------------------------------------------------------------------------- */
+
+		        // creating a user object with name Eric
+				User user = new User();
+				user.setName("Eric");
+				
+				//creating owner object
+				Owner owner = new Owner();
+				owner.setName("I am the owner");
+				owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
+				/* --------------------------------------------------------------------------------------- */
+				
+				menuItems.add(owner.createFoodItem("Beef and Cheese", 8.99));
+				menuItems.add(owner.createFoodItem("Buffalo Chicken", 7.99));
+				
+				// execute create menu
+				renderMenu();
+				
+		        // button listener template
+				/*
+				
+				userButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(null,user.getName());
+					}
+				});
+				
+				
+				ownerButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(null, owner.getName());
+					}
+				});
+				
+				menuButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						menuFrame.setVisible(true);
+					}
+				});*/
 			}
 		});
 		
 		loginPanel.add(newLogin);
-		
-			
 		
 
 	}
