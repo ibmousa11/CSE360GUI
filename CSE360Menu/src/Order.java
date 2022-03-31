@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Order {
 	public int orderId;
 	public String orderStatus;
-	public ArrayList<FoodItem> cart;
+	private ArrayList<FoodItem> cart;
 	public double totalPrice;
 	
 	public Order() {
@@ -26,6 +26,10 @@ public class Order {
 	
 	public void setOrderStatus(String newOrderStatus) {
 		orderStatus = newOrderStatus;
+	}
+	
+	public ArrayList<FoodItem> getCart() {
+		return cart;
 	}
 	
 	public boolean addToOrder(FoodItem foodItem) {
