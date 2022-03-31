@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Owner extends User {
 	
 	private String ownerName;
+	private ArrayList<Order> ordersProcessing;
 	
 	public Owner() {
 		
