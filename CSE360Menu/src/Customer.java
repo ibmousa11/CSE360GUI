@@ -27,6 +27,14 @@ public class Customer extends User {
 		}
 	}
 	
+	public int getNumOfOrders() {
+		return numOfOrders;
+	}
+	
+	public Order[] getOrdersArr() {
+		return orders;
+	}
+	
 	// addItem should add a food item and subsequently update the price, then return a boolean if successful
 	public boolean addItem(FoodItem foodItem) {
 		boolean result = orders[numOfOrders].addToOrder(foodItem);

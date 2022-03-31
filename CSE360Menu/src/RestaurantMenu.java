@@ -1,10 +1,14 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,6 +22,10 @@ public class RestaurantMenu {
 	private JPanel couponPanel;
 	private JPanel menuPanel;
 	private ArrayList<FoodItem> menuItems;
+	
+	private JFrame cartFrame;
+	private JPanel cartPanel;
+	
 
 	/**
 	 * Launch the application.
@@ -56,13 +64,15 @@ public class RestaurantMenu {
 		//what we can do is before we use initialize() we present user with login
 		//window that will take info and process it before we even open the menu
 		
-		initialize();
+		//take that login info and pass it to initialize to start the menu
+		Customer customer = new Customer("Eric Yan", "darkmagic10");
+		initialize(customer);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Customer currentUser) {
 		
 		
 		/* ---------------------------------- Window Frame -------------------------------------- */
@@ -76,40 +86,82 @@ public class RestaurantMenu {
         /* --------------------------------------------------------------------------------------- */
       
         
-        
         /* ---------------------------------- Home Panel ----------------------------------------- */
         
         // create a Panel that sits inside the frame
         homePanel = new JPanel();
-        homePanel.setLayout(null);
+        homePanel.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
         homePanel.setSize(1920,1080);
         frame.add(homePanel);
         
-        //creating the title
+        //creating the title, set the constraints
+        //constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.weighty = 2;
+        
 		JLabel title = new JLabel("SubZilla");
 		title.setSize(290, 70);
 		title.setFont(new Font("Impact", Font.PLAIN, 80));
-		homePanel.add(title);
-		title.setLocation(815, 30);
+		homePanel.add(title,constraints);
 		
 		/* ----------------------------------------------------------------------------------------- */
 		
+		/* ---------------------------------- Cart Panel -------------------------------------- */
+		// create a frame, this is the window of the application
+		constraints.gridx = 2;
+		constraints.gridy = 1;
+		constraints.ipadx = 300;
+		constraints.ipady = 600;
+		constraints.anchor = GridBagConstraints.LINE_END;
+		constraints.weighty = 1;
+		
+        cartPanel = new JPanel();
+        cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
+        cartPanel.setSize(300,600);
+        cartPanel.setLocation(1570,200);
+        cartPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        cartPanel.setPreferredSize(new Dimension(300,1080));
+        homePanel.add(cartPanel,constraints);
+        /* --------------------------------------------------------------------------------------- */
 		
 		
 		/* -------------------------------------- Cart Button -------------------------------------- */
-		JButton viewCartButton = new JButton("View Cart");
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        constraints.ipadx = 70;
+        constraints.ipady = 50;
+        constraints.anchor = GridBagConstraints.PAGE_END;
+        constraints.weighty = 1;
+        
+		JButton viewCartButton = new JButton("Place Order");
 		viewCartButton.setSize(100,50); 
 		viewCartButton.setLocation(1700, 900);
-		homePanel.add(viewCartButton);
+		homePanel.add(viewCartButton,constraints);
+		
+		viewCartButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		/* ----------------------------------------------------------------------------------------- */
+
 
 		
 		/* -------------------------------------- Coupon Panel ------------------------------------- */
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.anchor = GridBagConstraints.LINE_START;
+		constraints.ipadx = 50;
+		constraints.weighty = 1;
+		
 		couponPanel = new JPanel();
-		couponPanel.setSize(400, 600);
-		couponPanel.setLocation(1400,200);
+		couponPanel.setSize(250, 600);
+		couponPanel.setLocation(50,200);
 		couponPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		homePanel.add(couponPanel);
+		homePanel.add(couponPanel,constraints);
 		
 		JLabel couponTitle = new JLabel("Rewards Program");
 		couponTitle.setSize(150,30);
@@ -126,14 +178,21 @@ public class RestaurantMenu {
 		
 		
 		/* --------------------------------------- Menu Panel ------------------------------------- */
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.gridheight = 1;
+		constraints.ipadx = 700;
+		constraints.ipady = 600;
+		constraints.insets = new Insets(50,50,50,50);
 		
 		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
-		menuPanel.setSize(500,500);
-		menuPanel.setLocation(50, 300);
+		menuPanel.setSize(1170,500);
+		menuPanel.setLocation(350, 300);
 		menuPanel.setLayout(new GridBagLayout());
 		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
-		homePanel.add(menuPanel);
+		homePanel.add(menuPanel,constraints);
 
         // creating a user object with name Eric
 		User user = new User();
@@ -148,10 +207,8 @@ public class RestaurantMenu {
 		owner.createFoodItem(menuItems,"Beef and Cheese", 8.99);
 		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99);
 		
-		owner.changePrice(menuItems,"Beef and Cheese",6.99);
-		
 		// execute create menu
-		renderMenu();
+		renderMenu(currentUser);
 		
         // button listener template
 		/*
@@ -178,7 +235,7 @@ public class RestaurantMenu {
 	
 	
 	// create menu should read the CSV file with food items and then add to menu
-	private void renderMenu() {
+	private void renderMenu(Customer currentUser) {
 		// while there are still lines to read food items
 			// read the food item and add it to the array
 		
@@ -188,12 +245,36 @@ public class RestaurantMenu {
 		menuItems.forEach((FoodItem) -> {
 			JButton newItem = new JButton();
 			newItem.setLayout(new FlowLayout());
+
 			JLabel newLabel = new JLabel(FoodItem.getName());
 			JLabel newPrice = new JLabel(String.valueOf(FoodItem.getPrice()));
 			newItem.setSize(100,100);
 			newItem.add(newLabel);
 			newItem.add(newPrice);
 			menuPanel.add(newItem);
+			newItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// add the food item to the current user's cart
+					currentUser.addItem(FoodItem);
+					
+					// this is just printing it in the console so we can debug
+					currentUser.getOrdersArr()[currentUser.getNumOfOrders()].printOrder();
+					
+					// update the cart GUI
+					renderCart(currentUser);
+				}
+			});
+		});
+	}
+	
+	private void renderCart(Customer currentUser) {
+		cartPanel.removeAll();
+		currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getCart().forEach((FoodItem) -> {
+			JPanel cartItem = new JPanel();
+			JLabel itemName = new JLabel(FoodItem.getName());
+			cartItem.add(itemName);
+			cartPanel.add(cartItem);
+			cartPanel.revalidate();
 		});
 	}
 	
