@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -113,17 +114,16 @@ public class RestaurantMenu {
 		// create a frame, this is the window of the application
 		constraints.gridx = 2;
 		constraints.gridy = 1;
-		constraints.ipadx = 300;
-		constraints.ipady = 600;
+		constraints.ipadx = 100;
+		constraints.ipady = 100;
 		constraints.anchor = GridBagConstraints.LINE_END;
 		constraints.weighty = 1;
 		
         cartPanel = new JPanel();
         cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
-        cartPanel.setSize(300,600);
         cartPanel.setLocation(1570,200);
-        cartPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        cartPanel.setPreferredSize(new Dimension(300,1080));
+        cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
+        cartPanel.setMaximumSize(new Dimension(300,1080));
         homePanel.add(cartPanel,constraints);
         /* --------------------------------------------------------------------------------------- */
 		
@@ -160,7 +160,7 @@ public class RestaurantMenu {
 		couponPanel = new JPanel();
 		couponPanel.setSize(250, 600);
 		couponPanel.setLocation(50,200);
-		couponPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		couponPanel.setBorder(BorderFactory.createTitledBorder("Coupons"));
 		homePanel.add(couponPanel,constraints);
 		
 		JLabel couponTitle = new JLabel("Rewards Program");
@@ -190,7 +190,7 @@ public class RestaurantMenu {
 		menuPanel.setSize(1170,500);
 		menuPanel.setLocation(350, 300);
 		menuPanel.setLayout(new GridBagLayout());
-		menuPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		menuPanel.setBorder(BorderFactory.createTitledBorder("MENU"));
 		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		homePanel.add(menuPanel,constraints);
 
@@ -270,9 +270,9 @@ public class RestaurantMenu {
 	private void renderCart(Customer currentUser) {
 		cartPanel.removeAll();
 		currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getCart().forEach((FoodItem) -> {
-			JPanel cartItem = new JPanel();
-			JLabel itemName = new JLabel(FoodItem.getName());
-			cartItem.add(itemName);
+			JButton cartItem = new JButton(FoodItem.getName() + " " + FoodItem.getPrice() + "      x");
+			cartItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+			cartItem.setSize(40,30);
 			cartPanel.add(cartItem);
 			cartPanel.revalidate();
 		});
