@@ -32,12 +32,10 @@ public class RestaurantMenu {
 	private JScrollPane cartScrollPane;
 	private JLabel subtotal;
 	
-<<<<<<< HEAD
 	private int placeInLine = 0;
-=======
+	
 	private JPanel loginPanel;
 	private JButton loginButton;
->>>>>>> refs/heads/dev3
 	
 
 	/**
