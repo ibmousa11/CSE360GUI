@@ -32,6 +32,8 @@ public class RestaurantMenu {
 	private JScrollPane cartScrollPane;
 	private JLabel subtotal;
 	
+	private int placeInLine = 0;
+	
 	private JPanel loginPanel;
 	private JButton loginButton;
 	
@@ -185,6 +187,46 @@ public class RestaurantMenu {
 		placeOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				homePanel.setVisible(false);
+				placeInLine++;
+				
+				JPanel checkoutPanel = new JPanel();
+				checkoutPanel.setLayout(new GridBagLayout());
+				GridBagConstraints checkoutConstraints = new GridBagConstraints();
+				
+				checkoutPanel.setSize(1920,1080);
+		        
+		        //creating the title, set the constraints
+		        //constraints.fill = GridBagConstraints.HORIZONTAL;
+				checkoutConstraints.gridx = 0;
+				checkoutConstraints.gridy = 0;
+		        checkoutConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		        checkoutConstraints.weighty = 2;
+		        
+				JLabel OrderPlacedTitle = new JLabel("Order Placed");
+				//OrderPlacedTitle.setSize(290, 70);
+				OrderPlacedTitle.setFont(new Font("Impact", Font.PLAIN, 80));
+				checkoutPanel.add(OrderPlacedTitle,checkoutConstraints);
+				
+				JLabel placeInLineLabel = new JLabel("Your place in line is: " + placeInLine);
+				//placeInLineLabel.setSize(290, 70);
+				placeInLineLabel.setFont(new Font("Impact", Font.PLAIN, 20));
+				checkoutConstraints.gridy = 1;
+				checkoutPanel.add(placeInLineLabel,checkoutConstraints);
+				
+				
+				JPanel orderSummaryPanel = new JPanel();
+				checkoutConstraints.ipadx = 200;
+				checkoutConstraints.ipady = 300;
+				orderSummaryPanel.setBorder(BorderFactory.createTitledBorder("Summary"));
+				checkoutConstraints.gridy = 2; 
+				checkoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+			
+				checkoutPanel.add(orderSummaryPanel,checkoutConstraints);
+				
+				frame.add(checkoutPanel);
+				
+				
 			}
 		});
 		
@@ -197,7 +239,7 @@ public class RestaurantMenu {
         subtotal = new JLabel("Total: $" + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
         homePanel.add(subtotal,constraints);
 		/* ----------------------------------------------------------------------------------------- */
-
+	
 
 		
 		/* -------------------------------------- Coupon Panel ------------------------------------- */
