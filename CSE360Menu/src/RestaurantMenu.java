@@ -8,18 +8,29 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.*;
 
 public class RestaurantMenu {
 	
+	private String user;
+	private ArrayList<Customer> customerAccounts;
+	
+	private JLabel title;
+	private JLabel couponTitle;
+	private JLabel couponInfo;
+	
 	private JFrame loginFrame;
+	private JPanel loginPanel;
+	private JButton loginButton;
 
 	private JFrame frame;
 	private JPanel homePanel;
@@ -29,14 +40,12 @@ public class RestaurantMenu {
 	
 	private JPanel cartPanel;
 	private JPanel innerCartPanel;
-	private JScrollPane cartScrollPane;
 	private JLabel subtotal;
 	
+	private JPanel orderPanel;
+	private JButton placeOrder;
+	
 	private int placeInLine = 0;
-	
-	private JPanel loginPanel;
-	private JButton loginButton;
-	
 
 	/**
 	 * Launch the application.
@@ -45,14 +54,15 @@ public class RestaurantMenu {
 		
 		// example for adding a customer, adding fooditems to menu, then adding
 		// fooditems to a users order and printing the order, price updates accordingly
-		Customer newCustomer = new Customer("yaneric", "password");
+		
+		/*Customer newCustomer = new Customer("yaneric", "password");
 		FoodItem sandwich = new FoodItem("Sandwich",8.99);
 		FoodItem sandwich2 = new FoodItem("Italian Sub",7.99);
 		newCustomer.setPhone("5034736866");
 		newCustomer.addItem(sandwich);
 		newCustomer.addItem(sandwich2);
 		newCustomer.orders[0].printOrder();
-		System.out.println("Current total: " + newCustomer.orders[0].getTotalPrice());
+		System.out.println("Current total: " + newCustomer.orders[0].getTotalPrice());*/
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -71,13 +81,39 @@ public class RestaurantMenu {
 	 */
 	public RestaurantMenu() {
 		menuItems = new ArrayList<FoodItem>();
+		customerAccounts = new ArrayList<Customer>();
 		
-		//what we can do is before we use initialize() we present user with login
-		//window that will take info and process it before we even open the menu
+		//Initialize GUI elements in the constructor so we don't duplicate anything
+		frame = new JFrame("SubZilla");	
+        homePanel = new JPanel();
+        title = new JLabel("SubZilla");
+        couponTitle = new JLabel("Rewards Program");
+        couponInfo = new JLabel("BUY TEN SUBS, GET ONE FREE");
+        
+		loginPanel = new JPanel();
+		loginButton = new JButton("Login");
+		
+        orderPanel = new JPanel();
+		innerCartPanel = new JPanel();
+		cartPanel = new JPanel();
+		
+		placeOrder = new JButton("Place Order");
+		subtotal = new JLabel("0.00");
+		
+		couponPanel = new JPanel();
+		
+		menuPanel = new JPanel();
+
+		Owner owner = new Owner();
+		owner.setName("I am the owner");
+		owner.initializeMenu();
+		owner.createFoodItem(menuItems,"Beef and Cheese", 8.99, "Tender ribeye steak with melted provolone and caramelized onions on a hoagie roll");
+		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99, "Shredded chicken with blue cheese crumbles, ranch dressing, and signature buffalo sauce");
+		owner.createFoodItem(menuItems, "Classic Ham", 5.99, "Classic ham and cheese sub with honey mustard, french bread, cheddar cheese , and sliced ham ");
 		
 		//take that login info and pass it to initialize to start the menu
-		Customer customer = new Customer("Eric Yan", "darkmagic10");
-		initialize(customer);
+		Customer guest = new Customer("guest", "guest");
+		initialize(guest);
 	}
 	
 
@@ -85,11 +121,10 @@ public class RestaurantMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Customer currentUser) {
-		
+		System.out.println("currently logged in as: " + currentUser.getName());
 		
 		/* ---------------------------------- Window Frame -------------------------------------- */
 		// create a frame, this is the window of the application
-		frame = new JFrame("SubZilla");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -101,20 +136,16 @@ public class RestaurantMenu {
         /* ---------------------------------- Home Panel ----------------------------------------- */
         
         // create a Panel that sits inside the frame
-        homePanel = new JPanel();
         homePanel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         homePanel.setSize(1920,1080);
         frame.add(homePanel);
         
-        //creating the title, set the constraints
-        //constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
         constraints.weighty = 2;
         
-		JLabel title = new JLabel("SubZilla");
 		title.setSize(290, 70);
 		title.setFont(new Font("Impact", Font.PLAIN, 80));
 		homePanel.add(title,constraints);
@@ -127,10 +158,7 @@ public class RestaurantMenu {
 		constraints.ipady = 100;
 		constraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		constraints.fill = GridBagConstraints.BOTH;
-		//constraints.weightx = 1;
 		constraints.weighty = 2;
-		loginPanel = new JPanel();
-		loginButton = new JButton("Login");
 		loginPanel.add(loginButton);
 		homePanel.add(loginPanel,constraints);
 		
@@ -141,8 +169,6 @@ public class RestaurantMenu {
 		
 		});
 		
-		
-		
 		/* ---------------------------------- Cart Panel -------------------------------------- */
 		// create a frame, this is the window of the application
 		constraints.gridx = 2;
@@ -151,20 +177,16 @@ public class RestaurantMenu {
 		constraints.ipady = 25;
 		constraints.anchor = GridBagConstraints.LINE_END;
 		constraints.fill = GridBagConstraints.BOTH;
-		//constraints.weightx = 1;
 		constraints.weighty = 1;
 		
-
-        innerCartPanel = new JPanel();
         innerCartPanel.setLayout(new BoxLayout(innerCartPanel, BoxLayout.Y_AXIS));
-        innerCartPanel.setBorder(BorderFactory.createTitledBorder("Border"));
         
-        cartPanel = new JPanel();
         cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
         cartPanel.add(innerCartPanel);
-        
         homePanel.add(cartPanel,constraints);
+        
+		subtotal.setText("Total: " + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
         /* --------------------------------------------------------------------------------------- */
 		
 		
@@ -177,12 +199,10 @@ public class RestaurantMenu {
         constraints.fill = GridBagConstraints.NONE;
         constraints.weighty = 1;
         
-        JPanel buttonPanel = new JPanel();
-		JButton placeOrder = new JButton("Place Order");
 		placeOrder.setSize(100,50);
 		placeOrder.setLocation(1700, 900);
-		buttonPanel.add(placeOrder);
-		homePanel.add(buttonPanel,constraints);
+		orderPanel.add(placeOrder);
+		homePanel.add(orderPanel,constraints);
 		
 		placeOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -196,20 +216,16 @@ public class RestaurantMenu {
 				
 				checkoutPanel.setSize(1920,1080);
 		        
-		        //creating the title, set the constraints
-		        //constraints.fill = GridBagConstraints.HORIZONTAL;
 				checkoutConstraints.gridx = 0;
 				checkoutConstraints.gridy = 0;
 		        checkoutConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		        checkoutConstraints.weighty = 2;
 		        
 				JLabel OrderPlacedTitle = new JLabel("Order Placed");
-				//OrderPlacedTitle.setSize(290, 70);
 				OrderPlacedTitle.setFont(new Font("Impact", Font.PLAIN, 80));
 				checkoutPanel.add(OrderPlacedTitle,checkoutConstraints);
 				
 				JLabel placeInLineLabel = new JLabel("Your place in line is: " + placeInLine);
-				//placeInLineLabel.setSize(290, 70);
 				placeInLineLabel.setFont(new Font("Impact", Font.PLAIN, 20));
 				checkoutConstraints.gridy = 1;
 				checkoutPanel.add(placeInLineLabel,checkoutConstraints);
@@ -236,7 +252,6 @@ public class RestaurantMenu {
         constraints.ipady = 50;
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.weighty = 0;
-        subtotal = new JLabel("Total: $" + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
         homePanel.add(subtotal,constraints);
 		/* ----------------------------------------------------------------------------------------- */
 	
@@ -247,25 +262,21 @@ public class RestaurantMenu {
 		constraints.gridy = 1;
 		constraints.anchor = GridBagConstraints.LINE_START;
 		constraints.ipadx = 50;
-		//constraints.weightx = 1;
 		constraints.weighty = 1;
 		
-		couponPanel = new JPanel();
 		couponPanel.setSize(250, 600);
 		couponPanel.setLocation(50,200);
 		couponPanel.setBorder(BorderFactory.createTitledBorder("Coupons"));
 		homePanel.add(couponPanel,constraints);
 		
-		JLabel couponTitle = new JLabel("Rewards Program");
 		couponTitle.setSize(150,30);
 		couponTitle.setLocation(125, 10);
 		couponTitle.setHorizontalAlignment(JLabel.CENTER);
 		couponPanel.add(couponTitle);
 		
-		JLabel couponInfo = new JLabel("BUY TEN SUBS, GET ONE FREE");
 		couponInfo.setSize(250,30);
 		couponInfo.setLocation(75, 125);
-		couponInfo.setHorizontalAlignment(JLabel.CENTER);	//centers label inside of the label container
+		couponInfo.setHorizontalAlignment(JLabel.CENTER);
 		couponPanel.add(couponInfo);
 		/* ---------------------------------------------------------------------------------------- */
 		
@@ -275,56 +286,21 @@ public class RestaurantMenu {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridheight = 1;
-		//constraints.weightx = 1;
 		constraints.ipadx = 600;
 		constraints.ipady = 600;
 		constraints.insets = new Insets(50,50,50,50);
 		
-		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
 		menuPanel.setSize(1170,500);
 		menuPanel.setLocation(350, 300);
 		menuPanel.setLayout(new FlowLayout());
 		menuPanel.setBorder(BorderFactory.createTitledBorder("MENU"));
 		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		homePanel.add(menuPanel,constraints);
-
-        // creating a user object with name Eric
-		User user = new User();
-		user.setName("Eric");
 		
-		//creating owner object
-		Owner owner = new Owner();
-		owner.setName("I am the owner");
-		owner.initializeMenu();			//I get an error every time I add stuff to the menu and prices array
 		/* --------------------------------------------------------------------------------------- */
-		
-		owner.createFoodItem(menuItems,"Beef and Cheese", 8.99);
-		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99);
 		
 		// execute create menu
 		renderMenu(currentUser);
-		
-        // button listener template
-		/*
-		
-		userButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,user.getName());
-			}
-		});
-		
-		
-		ownerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, owner.getName());
-			}
-		});
-		
-		menuButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuFrame.setVisible(true);
-			}
-		});*/
 	}
 	
 	
@@ -336,6 +312,11 @@ public class RestaurantMenu {
 		// for each food item in the array
 			// create respective labels and add to the menu, dynamically adds menu items
 		menuPanel.removeAll();
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 3;
+		c.weighty = 1;
+		
 		menuItems.forEach((FoodItem) -> {
 			JButton newItem = new JButton();
 			newItem.setLayout(new FlowLayout());
@@ -345,7 +326,25 @@ public class RestaurantMenu {
 			newItem.setSize(100,100);
 			newItem.add(newLabel);
 			newItem.add(newPrice);
-			menuPanel.add(newItem);
+			
+			// Hover item functionality to display food information
+			newItem.addMouseListener(new MouseAdapter() {
+				JPanel informationBox = new JPanel();
+				JLabel information = new JLabel(FoodItem.getDescription() + " | Prep Time: " + FoodItem.getPrepTime() + " Minutes");
+				public void mouseEntered(java.awt.event.MouseEvent evt) {
+					informationBox.add(information);
+					homePanel.add(informationBox,c);
+					homePanel.revalidate();
+					homePanel.repaint();
+				}
+				public void mouseExited(java.awt.event.MouseEvent evt) {
+					homePanel.remove(informationBox);
+					homePanel.revalidate();
+					homePanel.repaint();
+				}
+			});
+
+			// add to cart listener functionality
 			newItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// add the food item to the current user's cart
@@ -358,11 +357,13 @@ public class RestaurantMenu {
 					renderCart(currentUser);
 				}
 			});
+			menuPanel.add(newItem);
 		});
 	}
 	
 	private void renderCart(Customer currentUser) {
 		cartPanel.removeAll();
+		cartPanel.repaint();
 		currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getCart().forEach((FoodItem) -> {
 			JButton cartItem = new JButton(FoodItem.getName() + " " + FoodItem.getPrice() + "      x");
 
@@ -385,10 +386,9 @@ public class RestaurantMenu {
 		});
 	}
 	
-	private void login() {		
+	private void login() {
 		loginFrame = new JFrame("Login");
 		loginFrame.setBounds(100, 100, 450, 300);
-		//loginFrame.setDefaultCloseOperation();
 		loginFrame.pack();
 		loginFrame.setSize(500,600);
 		loginFrame.setVisible(true);
@@ -400,6 +400,10 @@ public class RestaurantMenu {
 		loginFrame.add(loginPanel);
 		loginPanel.add(username);
 		loginPanel.add(password);
+		loginPanel.add(enter);
+		
+		// we need to make a new customer given the username and password options
+		Customer newCustomer = new Customer("Eric","password");
 		
 		username.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -413,7 +417,16 @@ public class RestaurantMenu {
 				newLogin.setText(input);	
 			}
 		});
-		loginPanel.add(enter);
+		
+		enter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				loginFrame.dispose();
+				renderCart(newCustomer);
+				initialize(newCustomer);
+			}
+		});
+
 	}
 	
 }

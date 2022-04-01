@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Order {
@@ -5,11 +7,13 @@ public class Order {
 	public String orderStatus;
 	private ArrayList<FoodItem> cart;
 	public double totalPrice;
+	private int orderTime;
 	
 	public Order() {
 		this.orderStatus = "Order Received by Restaurant";
 		this.cart = new ArrayList<FoodItem>();
 		this.totalPrice = 0.00;
+		this.orderTime = 0;
 	}
 	
 	public int getOrderId() {
@@ -26,6 +30,11 @@ public class Order {
 	
 	public void setOrderStatus(String newOrderStatus) {
 		orderStatus = newOrderStatus;
+	}
+	
+	public int getOrderTime() {
+		cart.forEach((foodItem) -> orderTime += foodItem.getPrepTime());
+		return orderTime;
 	}
 	
 	public ArrayList<FoodItem> getCart() {
@@ -45,7 +54,8 @@ public class Order {
 	}
 	
 	public double getTotalPrice() {
-		return totalPrice;
+		BigDecimal bd = new BigDecimal(totalPrice).setScale(2,RoundingMode.HALF_DOWN);
+		return bd.doubleValue();
 	}
 	
 	private void updatePrice() {

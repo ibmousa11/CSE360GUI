@@ -5,6 +5,7 @@ public class Customer extends User {
 	public Order[] orders;
 	private int numOfOrders;
 	private boolean hasCoupon;
+	private int orderCompleteTime;
 	
 	public Customer() {
 		//default constructor
@@ -35,6 +36,10 @@ public class Customer extends User {
 		return orders;
 	}
 	
+	public int getOrderTime() {
+		return orderCompleteTime;
+	}
+	
 	// addItem should add a food item and subsequently update the price, then return a boolean if successful
 	public boolean addItem(FoodItem foodItem) {
 		boolean result = orders[numOfOrders].addToOrder(foodItem);
@@ -45,6 +50,10 @@ public class Customer extends User {
 	public boolean removeItem(FoodItem foodItem) {
 		boolean result = orders[numOfOrders].removeFromOrder(foodItem);
 		return result;
+	}
+	
+	public void removeAll() {
+		orders[numOfOrders].getCart().clear();
 	}
 	
 	public boolean placeOrder() {

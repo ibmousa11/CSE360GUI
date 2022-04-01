@@ -33,8 +33,8 @@ public class Owner extends User {
 		}
 	}
 	
-	public FoodItem createFoodItem(ArrayList<FoodItem> menu, String name, double price) {
-		FoodItem newItem = new FoodItem(name, price);
+	public FoodItem createFoodItem(ArrayList<FoodItem> menu, String name, double price, String description) {
+		FoodItem newItem = new FoodItem(name, price, description);
 		menu.add(newItem);
 		return newItem;
 	}
