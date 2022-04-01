@@ -346,7 +346,7 @@ public class RestaurantMenu {
 	private void login() {		
 		loginFrame = new JFrame("Login");
 		loginFrame.setBounds(100, 100, 450, 300);
-		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//loginFrame.setDefaultCloseOperation();
 		loginFrame.pack();
 		loginFrame.setSize(500,600);
 		loginFrame.setVisible(true);
