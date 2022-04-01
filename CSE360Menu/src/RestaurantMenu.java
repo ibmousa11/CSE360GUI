@@ -53,14 +53,15 @@ public class RestaurantMenu {
 		
 		// example for adding a customer, adding fooditems to menu, then adding
 		// fooditems to a users order and printing the order, price updates accordingly
-		Customer newCustomer = new Customer("yaneric", "password");
+		
+		/*Customer newCustomer = new Customer("yaneric", "password");
 		FoodItem sandwich = new FoodItem("Sandwich",8.99);
 		FoodItem sandwich2 = new FoodItem("Italian Sub",7.99);
 		newCustomer.setPhone("5034736866");
 		newCustomer.addItem(sandwich);
 		newCustomer.addItem(sandwich2);
 		newCustomer.orders[0].printOrder();
-		System.out.println("Current total: " + newCustomer.orders[0].getTotalPrice());
+		System.out.println("Current total: " + newCustomer.orders[0].getTotalPrice());*/
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -119,11 +120,10 @@ public class RestaurantMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Customer currentUser) {
-		System.out.println(currentUser.getName());
+		System.out.println("currently logged in as: " + currentUser.getName());
 		
 		/* ---------------------------------- Window Frame -------------------------------------- */
 		// create a frame, this is the window of the application
-		//frame = new JFrame("SubZilla");	
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -140,8 +140,6 @@ public class RestaurantMenu {
         homePanel.setSize(1920,1080);
         frame.add(homePanel);
         
-        //creating the title, set the constraints
-        //constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -217,20 +215,16 @@ public class RestaurantMenu {
 				
 				checkoutPanel.setSize(1920,1080);
 		        
-		        //creating the title, set the constraints
-		        //constraints.fill = GridBagConstraints.HORIZONTAL;
 				checkoutConstraints.gridx = 0;
 				checkoutConstraints.gridy = 0;
 		        checkoutConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		        checkoutConstraints.weighty = 2;
 		        
 				JLabel OrderPlacedTitle = new JLabel("Order Placed");
-				//OrderPlacedTitle.setSize(290, 70);
 				OrderPlacedTitle.setFont(new Font("Impact", Font.PLAIN, 80));
 				checkoutPanel.add(OrderPlacedTitle,checkoutConstraints);
 				
 				JLabel placeInLineLabel = new JLabel("Your place in line is: " + placeInLine);
-				//placeInLineLabel.setSize(290, 70);
 				placeInLineLabel.setFont(new Font("Impact", Font.PLAIN, 20));
 				checkoutConstraints.gridy = 1;
 				checkoutPanel.add(placeInLineLabel,checkoutConstraints);
@@ -281,7 +275,7 @@ public class RestaurantMenu {
 		
 		couponInfo.setSize(250,30);
 		couponInfo.setLocation(75, 125);
-		couponInfo.setHorizontalAlignment(JLabel.CENTER);	//centers label inside of the label container
+		couponInfo.setHorizontalAlignment(JLabel.CENTER);
 		couponPanel.add(couponInfo);
 		/* ---------------------------------------------------------------------------------------- */
 		
