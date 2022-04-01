@@ -7,11 +7,13 @@ public class Order {
 	public String orderStatus;
 	private ArrayList<FoodItem> cart;
 	public double totalPrice;
+	private int orderTime;
 	
 	public Order() {
 		this.orderStatus = "Order Received by Restaurant";
 		this.cart = new ArrayList<FoodItem>();
 		this.totalPrice = 0.00;
+		this.orderTime = 0;
 	}
 	
 	public int getOrderId() {
@@ -28,6 +30,11 @@ public class Order {
 	
 	public void setOrderStatus(String newOrderStatus) {
 		orderStatus = newOrderStatus;
+	}
+	
+	public int getOrderTime() {
+		cart.forEach((foodItem) -> orderTime += foodItem.getPrepTime());
+		return orderTime;
 	}
 	
 	public ArrayList<FoodItem> getCart() {
