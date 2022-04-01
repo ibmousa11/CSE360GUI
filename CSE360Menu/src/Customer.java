@@ -5,6 +5,7 @@ public class Customer extends User {
 	public Order[] orders;
 	private int numOfOrders;
 	private boolean hasCoupon;
+	private int orderTime;
 	
 	public Customer() {
 		//default constructor
@@ -33,6 +34,11 @@ public class Customer extends User {
 	
 	public Order[] getOrdersArr() {
 		return orders;
+	}
+	
+	public int getOrderTime() {
+		orders[numOfOrders].getCart().forEach((foodItem) -> orderTime += foodItem.getPrepTime());
+		return orderTime;
 	}
 	
 	// addItem should add a food item and subsequently update the price, then return a boolean if successful
