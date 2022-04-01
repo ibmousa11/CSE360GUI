@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Order {
@@ -45,7 +47,8 @@ public class Order {
 	}
 	
 	public double getTotalPrice() {
-		return totalPrice;
+		BigDecimal bd = new BigDecimal(totalPrice).setScale(2,RoundingMode.HALF_DOWN);
+		return bd.doubleValue();
 	}
 	
 	private void updatePrice() {

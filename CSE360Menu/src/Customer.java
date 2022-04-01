@@ -47,6 +47,10 @@ public class Customer extends User {
 		return result;
 	}
 	
+	public void removeAll() {
+		orders[numOfOrders].getCart().clear();
+	}
+	
 	public boolean placeOrder() {
 		numOfOrders++;
 		// we need to send this current order to a restaurant class that will process it or something similar
