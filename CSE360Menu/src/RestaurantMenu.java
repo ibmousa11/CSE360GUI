@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class RestaurantMenu {
+	
+	private JFrame loginFrame;
 
 	private JFrame frame;
 	private JPanel homePanel;
@@ -24,9 +27,13 @@ public class RestaurantMenu {
 	private JPanel menuPanel;
 	private ArrayList<FoodItem> menuItems;
 	
-	private JFrame cartFrame;
 	private JPanel cartPanel;
+	private JPanel innerCartPanel;
+	private JScrollPane cartScrollPane;
 	private JLabel subtotal;
+	
+	private JPanel loginPanel;
+	private JButton loginButton;
 	
 
 	/**
@@ -70,6 +77,7 @@ public class RestaurantMenu {
 		Customer customer = new Customer("Eric Yan", "darkmagic10");
 		initialize(customer);
 	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -111,20 +119,49 @@ public class RestaurantMenu {
 		
 		/* ----------------------------------------------------------------------------------------- */
 		
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.ipadx = 100;
+		constraints.ipady = 100;
+		constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		constraints.fill = GridBagConstraints.BOTH;
+		//constraints.weightx = 1;
+		constraints.weighty = 2;
+		loginPanel = new JPanel();
+		loginButton = new JButton("Login");
+		loginPanel.add(loginButton);
+		homePanel.add(loginPanel,constraints);
+		
+		loginButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				login();
+			}
+		
+		});
+		
+		
+		
 		/* ---------------------------------- Cart Panel -------------------------------------- */
 		// create a frame, this is the window of the application
 		constraints.gridx = 2;
 		constraints.gridy = 1;
-		constraints.ipadx = 100;
-		constraints.ipady = 100;
+		constraints.ipadx = 25;
+		constraints.ipady = 25;
 		constraints.anchor = GridBagConstraints.LINE_END;
+		constraints.fill = GridBagConstraints.BOTH;
+		//constraints.weightx = 1;
 		constraints.weighty = 1;
 		
+
+        innerCartPanel = new JPanel();
+        innerCartPanel.setLayout(new BoxLayout(innerCartPanel, BoxLayout.Y_AXIS));
+        innerCartPanel.setBorder(BorderFactory.createTitledBorder("Border"));
+        
         cartPanel = new JPanel();
         cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
-        cartPanel.setLocation(1570,200);
         cartPanel.setBorder(BorderFactory.createTitledBorder("Cart"));
-        //cartPanel.setMaximumSize(new Dimension(300,1080));
+        cartPanel.add(innerCartPanel);
+        
         homePanel.add(cartPanel,constraints);
         /* --------------------------------------------------------------------------------------- */
 		
@@ -135,14 +172,17 @@ public class RestaurantMenu {
         constraints.ipadx = 70;
         constraints.ipady = 50;
         constraints.anchor = GridBagConstraints.PAGE_END;
+        constraints.fill = GridBagConstraints.NONE;
         constraints.weighty = 1;
         
-		JButton viewCartButton = new JButton("Place Order");
-		viewCartButton.setSize(100,50); 
-		viewCartButton.setLocation(1700, 900);
-		homePanel.add(viewCartButton,constraints);
+        JPanel buttonPanel = new JPanel();
+		JButton placeOrder = new JButton("Place Order");
+		placeOrder.setSize(100,50);
+		placeOrder.setLocation(1700, 900);
+		buttonPanel.add(placeOrder);
+		homePanel.add(buttonPanel,constraints);
 		
-		viewCartButton.addActionListener(new ActionListener() {
+		placeOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 			}
@@ -165,6 +205,7 @@ public class RestaurantMenu {
 		constraints.gridy = 1;
 		constraints.anchor = GridBagConstraints.LINE_START;
 		constraints.ipadx = 50;
+		//constraints.weightx = 1;
 		constraints.weighty = 1;
 		
 		couponPanel = new JPanel();
@@ -192,14 +233,15 @@ public class RestaurantMenu {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridheight = 1;
-		constraints.ipadx = 700;
+		//constraints.weightx = 1;
+		constraints.ipadx = 600;
 		constraints.ipady = 600;
 		constraints.insets = new Insets(50,50,50,50);
 		
 		menuPanel = new JPanel();			//creates a panel with two columns and infinite rows
 		menuPanel.setSize(1170,500);
 		menuPanel.setLocation(350, 300);
-		menuPanel.setLayout(new GridBagLayout());
+		menuPanel.setLayout(new FlowLayout());
 		menuPanel.setBorder(BorderFactory.createTitledBorder("MENU"));
 		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		homePanel.add(menuPanel,constraints);
@@ -281,12 +323,55 @@ public class RestaurantMenu {
 		cartPanel.removeAll();
 		currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getCart().forEach((FoodItem) -> {
 			JButton cartItem = new JButton(FoodItem.getName() + " " + FoodItem.getPrice() + "      x");
+
 			cartItem.setAlignmentX(Component.CENTER_ALIGNMENT);
-			cartItem.setSize(40,30);
-			cartPanel.add(cartItem);
+			cartPanel.add(cartItem,BorderLayout.PAGE_END);
+			cartPanel.revalidate();	
+			
 			subtotal.setText("Total: $" + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
-			cartPanel.revalidate();
+			
+			cartItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					currentUser.getOrdersArr()[currentUser.getNumOfOrders()].removeFromOrder(FoodItem);
+					cartPanel.remove(cartItem);
+					cartPanel.revalidate();
+					cartPanel.repaint();
+					subtotal.setText("Total: $" + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
+				}
+			});
+			cartPanel.repaint();
 		});
+	}
+	
+	private void login() {		
+		loginFrame = new JFrame("Login");
+		loginFrame.setBounds(100, 100, 450, 300);
+		//loginFrame.setDefaultCloseOperation();
+		loginFrame.pack();
+		loginFrame.setSize(500,600);
+		loginFrame.setVisible(true);
+		JPanel loginPanel = new JPanel();
+		JLabel newLogin = new JLabel("LOGIN");
+		JTextField username = new JTextField(25);
+		JTextField password = new JTextField(25);
+		JButton enter = new JButton("Enter");
+		loginFrame.add(loginPanel);
+		loginPanel.add(username);
+		loginPanel.add(password);
+		
+		username.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = username.getText();
+				newLogin.setText(input);	
+			}
+		});
+		password.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = password.getText();
+				newLogin.setText(input);	
+			}
+		});
+		loginPanel.add(enter);
 	}
 	
 }
