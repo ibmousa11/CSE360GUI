@@ -11,6 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -106,9 +107,9 @@ public class RestaurantMenu {
 		Owner owner = new Owner();
 		owner.setName("I am the owner");
 		owner.initializeMenu();
-		owner.createFoodItem(menuItems,"Beef and Cheese", 8.99);
-		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99);
-		owner.createFoodItem(menuItems, "Classic Ham", 5.99);
+		owner.createFoodItem(menuItems,"Beef and Cheese", 8.99, "Tender ribeye steak with melted provolone and caramelized onions on a hoagie roll");
+		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99, "Shredded chicken with blue cheese crumbles, ranch dressing, and signature buffalo sauce");
+		owner.createFoodItem(menuItems, "Classic Ham", 5.99, "Classic ham and cheese sub with honey mustard, french bread, cheddar cheese , and sliced ham ");
 		
 		//take that login info and pass it to initialize to start the menu
 		Customer guest = new Customer("guest", "guest");
@@ -311,6 +312,11 @@ public class RestaurantMenu {
 		// for each food item in the array
 			// create respective labels and add to the menu, dynamically adds menu items
 		menuPanel.removeAll();
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 3;
+		c.weighty = 1;
+		
 		menuItems.forEach((FoodItem) -> {
 			JButton newItem = new JButton();
 			newItem.setLayout(new FlowLayout());
@@ -320,7 +326,25 @@ public class RestaurantMenu {
 			newItem.setSize(100,100);
 			newItem.add(newLabel);
 			newItem.add(newPrice);
-			menuPanel.add(newItem);
+			
+			// Hover item functionality to display food information
+			newItem.addMouseListener(new MouseAdapter() {
+				JPanel informationBox = new JPanel();
+				JLabel information = new JLabel(FoodItem.getDescription() + " | Prep Time: " + FoodItem.getPrepTime() + " Minutes");
+				public void mouseEntered(java.awt.event.MouseEvent evt) {
+					informationBox.add(information);
+					homePanel.add(informationBox,c);
+					homePanel.revalidate();
+					homePanel.repaint();
+				}
+				public void mouseExited(java.awt.event.MouseEvent evt) {
+					homePanel.remove(informationBox);
+					homePanel.revalidate();
+					homePanel.repaint();
+				}
+			});
+
+			// add to cart listener functionality
 			newItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// add the food item to the current user's cart
@@ -333,6 +357,7 @@ public class RestaurantMenu {
 					renderCart(currentUser);
 				}
 			});
+			menuPanel.add(newItem);
 		});
 	}
 	
