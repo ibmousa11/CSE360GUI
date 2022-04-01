@@ -301,20 +301,8 @@ public class RestaurantMenu {
 		menuPanel.setBorder(BorderFactory.createTitledBorder("MENU"));
 		menuPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);		//adds objects in from left to right
 		homePanel.add(menuPanel,constraints);
-
-        // creating a user object with name Eric
-		User user = new User();
-		user.setName("Eric");
 		
-		//creating owner object
-		/*Owner owner = new Owner();
-		owner.setName("I am the owner");
-		owner.initializeMenu();
 		/* --------------------------------------------------------------------------------------- */
-		
-		/*owner.createFoodItem(menuItems,"Beef and Cheese", 8.99);
-		owner.createFoodItem(menuItems,"Buffalo Chicken", 7.99);
-		owner.createFoodItem(menuItems, "Classic Ham", 5.99);*/
 		
 		// execute create menu
 		renderMenu(currentUser);
@@ -395,6 +383,7 @@ public class RestaurantMenu {
 		loginPanel.add(password);
 		loginPanel.add(enter);
 		
+		// we need to make a new customer given the username and password options
 		Customer newCustomer = new Customer("Eric","password");
 		
 		username.addActionListener(new ActionListener() {
