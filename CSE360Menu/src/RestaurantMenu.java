@@ -8,15 +8,19 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class RestaurantMenu {
@@ -27,6 +31,8 @@ public class RestaurantMenu {
 	private JLabel title;
 	private JLabel couponTitle;
 	private JLabel couponInfo;
+	
+	private JPanel picturePanel;
 	
 	private JFrame loginFrame;
 	private JPanel loginPanel;
@@ -90,6 +96,8 @@ public class RestaurantMenu {
         couponTitle = new JLabel("Rewards Program");
         couponInfo = new JLabel("BUY TEN SUBS, GET ONE FREE");
         
+        picturePanel = new JPanel();
+        
 		loginPanel = new JPanel();
 		loginButton = new JButton("Login");
 		
@@ -144,7 +152,7 @@ public class RestaurantMenu {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        constraints.weighty = 2;
+        constraints.weighty = 0.3;
         
 		title.setSize(290, 70);
 		title.setFont(new Font("Impact", Font.PLAIN, 80));
@@ -152,13 +160,14 @@ public class RestaurantMenu {
 		
 		/* ----------------------------------------------------------------------------------------- */
 		
+		/*-----------------------------Login Button-------------------------------------------*/
 		constraints.gridx = 2;
 		constraints.gridy = 0;
 		constraints.ipadx = 100;
 		constraints.ipady = 100;
 		constraints.anchor = GridBagConstraints.FIRST_LINE_END;
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.weighty = 2;
+		constraints.weighty = 0.2;
 		loginPanel.add(loginButton);
 		homePanel.add(loginPanel,constraints);
 		
@@ -177,7 +186,7 @@ public class RestaurantMenu {
 		constraints.ipady = 25;
 		constraints.anchor = GridBagConstraints.LINE_END;
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.weighty = 1;
+		constraints.weighty = 0.6;
 		
         innerCartPanel.setLayout(new BoxLayout(innerCartPanel, BoxLayout.Y_AXIS));
         
@@ -193,11 +202,11 @@ public class RestaurantMenu {
 		/* -------------------------------------- Place Order Button -------------------------------------- */
         constraints.gridx = 2;
         constraints.gridy = 3;
-        constraints.ipadx = 70;
+        constraints.ipadx = 50;
         constraints.ipady = 50;
         constraints.anchor = GridBagConstraints.PAGE_END;
         constraints.fill = GridBagConstraints.NONE;
-        constraints.weighty = 1;
+        constraints.weighty = 0.3;
         
 		placeOrder.setSize(100,50);
 		placeOrder.setLocation(1700, 900);
@@ -248,10 +257,10 @@ public class RestaurantMenu {
 		
         constraints.gridx = 2;
         constraints.gridy = 2;
-        constraints.ipadx = 50;
-        constraints.ipady = 50;
+        constraints.ipadx = 20;
+        constraints.ipady = 20;
         constraints.anchor = GridBagConstraints.CENTER;
-        constraints.weighty = 0;
+        constraints.weighty = 0.3;
         homePanel.add(subtotal,constraints);
 		/* ----------------------------------------------------------------------------------------- */
 	
@@ -261,8 +270,8 @@ public class RestaurantMenu {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.anchor = GridBagConstraints.LINE_START;
-		constraints.ipadx = 50;
-		constraints.weighty = 1;
+		constraints.ipadx = 20;
+		constraints.weighty = 0.3;
 		
 		couponPanel.setSize(250, 600);
 		couponPanel.setLocation(50,200);
@@ -278,6 +287,11 @@ public class RestaurantMenu {
 		couponInfo.setLocation(75, 125);
 		couponInfo.setHorizontalAlignment(JLabel.CENTER);
 		couponPanel.add(couponInfo);
+		
+		
+		constraints.gridy = 2;
+		picturePanel.setPreferredSize(new Dimension(200,200));
+		homePanel.add(picturePanel,constraints);
 		/* ---------------------------------------------------------------------------------------- */
 		
 		
@@ -286,8 +300,9 @@ public class RestaurantMenu {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridheight = 1;
-		constraints.ipadx = 600;
-		constraints.ipady = 600;
+		constraints.weighty = 0.7;
+		constraints.ipadx = 400;
+		constraints.ipady = 400;
 		constraints.insets = new Insets(50,50,50,50);
 		
 		menuPanel.setSize(1170,500);
@@ -312,12 +327,26 @@ public class RestaurantMenu {
 		// for each food item in the array
 			// create respective labels and add to the menu, dynamically adds menu items
 		menuPanel.removeAll();
+		
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 1;
-		c.gridy = 3;
-		c.weighty = 1;
+		c.gridy = 2;
+		c.weighty = 0.1;
+		c.fill = GridBagConstraints.NONE;
 		
 		menuItems.forEach((FoodItem) -> {
+			BufferedImage pic = null;
+			try {
+				pic = ImageIO.read(this.getClass().getResource(FoodItem.getName() + ".jpg"));
+				System.out.println(FoodItem.getName() + ".jpg");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			ImageIcon imageIcon = new ImageIcon(pic);
+			Image image = imageIcon.getImage();
+			Image scaledImg = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+			imageIcon = new ImageIcon(scaledImg);
+			JLabel picture = new JLabel(imageIcon);
+			
 			JButton newItem = new JButton();
 			newItem.setLayout(new FlowLayout());
 
@@ -332,13 +361,16 @@ public class RestaurantMenu {
 				JPanel informationBox = new JPanel();
 				JLabel information = new JLabel(FoodItem.getDescription() + " | Prep Time: " + FoodItem.getPrepTime() + " Minutes");
 				public void mouseEntered(java.awt.event.MouseEvent evt) {
+					c.gridx = 1;
 					informationBox.add(information);
 					homePanel.add(informationBox,c);
+					picturePanel.add(picture,c);
 					homePanel.revalidate();
 					homePanel.repaint();
 				}
 				public void mouseExited(java.awt.event.MouseEvent evt) {
 					homePanel.remove(informationBox);
+					picturePanel.remove(picture);
 					homePanel.revalidate();
 					homePanel.repaint();
 				}
