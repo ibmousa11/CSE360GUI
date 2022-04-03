@@ -328,10 +328,12 @@ public class RestaurantMenu {
 			newItem.add(newPrice);
 			
 			// Hover item functionality to display food information
+			//place the picture, have it hover over 
 			newItem.addMouseListener(new MouseAdapter() {
 				JPanel informationBox = new JPanel();
 				JLabel information = new JLabel(FoodItem.getDescription() + " | Prep Time: " + FoodItem.getPrepTime() + " Minutes");
-				public void mouseEntered(java.awt.event.MouseEvent evt) {
+				public void mouseEntered(java.awt.event.MouseEvent evt) { 
+					//add image object and touch up 
 					informationBox.add(information);
 					homePanel.add(informationBox,c);
 					homePanel.revalidate();
@@ -404,6 +406,8 @@ public class RestaurantMenu {
 		
 		// we need to make a new customer given the username and password options
 		Customer newCustomer = new Customer("Eric","password");
+		//create a new customer objective//automatically default to guest or save to info 
+		
 		
 		username.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
