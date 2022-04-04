@@ -25,7 +25,8 @@ import javax.swing.*;
 
 public class RestaurantMenu {
 	
-	private String user;
+	private String currentUsername;
+	private String currentUserpassword;
 	private ArrayList<Customer> customerAccounts;
 	
 	private JLabel title;
@@ -100,6 +101,7 @@ public class RestaurantMenu {
         
 		loginPanel = new JPanel();
 		loginButton = new JButton("Login");
+		loginFrame = new JFrame("LOGIN");
 		
         orderPanel = new JPanel();
 		innerCartPanel = new JPanel();
@@ -124,7 +126,6 @@ public class RestaurantMenu {
 		initialize(guest);
 	}
 	
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -419,39 +420,28 @@ public class RestaurantMenu {
 	}
 	
 	private void login() {
-		loginFrame = new JFrame("Login");
 		loginFrame.setBounds(100, 100, 450, 300);
 		loginFrame.pack();
 		loginFrame.setSize(500,600);
 		loginFrame.setVisible(true);
-		JPanel loginPanel = new JPanel();
+		JPanel loginFields = new JPanel();
 		JLabel newLogin = new JLabel("LOGIN");
-		JTextField username = new JTextField(25);
-		JTextField password = new JTextField(25);
+		JTextField usernameField = new JTextField(25);
+		JTextField passwordField = new JTextField(25);
 		JButton enter = new JButton("Enter");
-		loginFrame.add(loginPanel);
-		loginPanel.add(username);
-		loginPanel.add(password);
-		loginPanel.add(enter);
+		loginFrame.add(loginFields);
+		loginFields.add(usernameField);
+		loginFields.add(passwordField);
+		loginFields.add(enter);
 		
 		// we need to make a new customer given the username and password options
-		Customer newCustomer = new Customer("Eric","password");
-		
-		username.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String input = username.getText();
-				newLogin.setText(input);	
-			}
-		});
-		password.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String input = password.getText();
-				newLogin.setText(input);	
-			}
-		});
 		
 		enter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				currentUsername = usernameField.getText();
+				currentUserpassword = passwordField.getText();
+				Customer newCustomer = new Customer(currentUsername,currentUserpassword);
+				
 				frame.dispose();
 				loginFrame.dispose();
 				renderCart(newCustomer);
