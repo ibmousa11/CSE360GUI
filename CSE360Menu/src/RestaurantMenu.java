@@ -441,6 +441,7 @@ public class RestaurantMenu {
 				currentUsername = usernameField.getText();
 				currentUserpassword = passwordField.getText();
 				Customer newCustomer = new Customer(currentUsername,currentUserpassword);
+				
 				frame.dispose();
 				loginFrame.dispose();
 				renderCart(newCustomer);
