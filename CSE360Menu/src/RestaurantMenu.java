@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -8,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -15,13 +15,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 public class RestaurantMenu {
 	
@@ -180,6 +186,9 @@ public class RestaurantMenu {
 		
 		});
 		
+		
+		
+		
 		/* ---------------------------------- Cart Panel -------------------------------------- */
 		// create a frame, this is the window of the application
 		constraints.gridx = 2;
@@ -200,6 +209,64 @@ public class RestaurantMenu {
         
 		subtotal.setText("Total: " + String.valueOf(currentUser.getOrdersArr()[currentUser.getNumOfOrders()].getTotalPrice()));
         /* --------------------------------------------------------------------------------------- */
+		
+		
+		/* ---------------------------------- Search Box -------------------------------------- */
+		//adding main panel
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(null);
+		constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.insets = new Insets(10,110,0,300);
+        searchPanel.setBorder(BorderFactory.createTitledBorder("Search the Menu"));
+        homePanel.add(searchPanel, constraints);
+        
+        //adding button
+        JButton searchButton = new JButton("Search");
+        //constraints.gridx = 1;
+        //constraints.gridy = 0;
+        searchButton.setBounds(220,20,100,30);
+        //searchButton.setSize(20,20);
+        //constraints.ipadx = 40;
+        //constraints.ipady = 40;
+        searchPanel.add(searchButton);
+        
+        //adding search field
+        JTextField searchField = new JTextField();
+        searchField.setBounds(30,20,180,30);
+        searchPanel.add(searchField);
+        
+        //adding results panel with scroll
+        JPanel resultsPanel = new JPanel(new GridLayout(0,2));
+        resultsPanel.setBounds(30,50,290,100);
+        resultsPanel.setBorder(BorderFactory.createTitledBorder("Results"));
+//        JScrollPane scrollPane = new JScrollPane(resultsPanel);
+//        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        searchPanel.add(resultsPanel);
+        
+        //adding action event to search button
+        searchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				resultsPanel.removeAll();
+				resultsPanel.updateUI();
+				for(int i = 0; i < menuItems.size(); i++) {
+					String searchWords = searchField.getText();
+					if(menuItems.get(i).getName().startsWith(searchWords)) {
+						JLabel tempLabel = new JLabel(menuItems.get(i).getName());
+						resultsPanel.add(tempLabel);
+					}
+					
+				}
+			}
+		
+		});
+        
+        
+		
+		
 		
 		
 		/* -------------------------------------- Place Order Button -------------------------------------- */
