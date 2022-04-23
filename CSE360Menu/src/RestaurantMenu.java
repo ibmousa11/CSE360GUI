@@ -52,6 +52,10 @@ public class RestaurantMenu {
 	private JPanel orderPanel;
 	private JButton placeOrder;
 	
+	private JFrame PaymentFrame;
+	private JPanel PaymentPanel;
+	private JButton PaymentButton;
+	
 	private int placeInLine = 0;
 
 	/**
@@ -109,6 +113,9 @@ public class RestaurantMenu {
 		
 		placeOrder = new JButton("Place Order");
 		subtotal = new JLabel("0.00");
+		
+		PaymentPanel = new JPanel();
+		PaymentButton = new JButton("Customer Information");
 		
 		couponPanel = new JPanel();
 		
@@ -172,6 +179,10 @@ public class RestaurantMenu {
 		constraints.weighty = 0.2;
 		loginPanel.add(loginButton);
 		homePanel.add(loginPanel,constraints);
+		
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		
 		
 		loginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -265,7 +276,26 @@ public class RestaurantMenu {
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.weighty = 0.3;
         homePanel.add(subtotal,constraints);
-		/* ----------------------------------------------------------------------------------------- */
+        
+        /* -------------------------------------Payment InformationPanel---------------------------------- */
+        
+        constraints.gridx = -1;
+        constraints.gridy = 0;
+        constraints.ipadx = 100;
+        constraints.ipady = 100;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weighty = 0.2;
+        PaymentPanel.add( PaymentButton);
+        homePanel.add( PaymentPanel, constraints);
+       
+        PaymentButton.addActionListener(new ActionListener()
+        {
+        	public void actionPerformed(ActionEvent e)
+        	{
+        		Payment();
+        	}
+        });
 	
 
 		
@@ -352,7 +382,7 @@ public class RestaurantMenu {
 			JLabel picture = new JLabel(imageIcon);
 			JFrame pictureFrame = new JFrame();
 			pictureFrame.setSize(300,300);
-			pictureFrame.setBounds(400,700,300,300);
+			pictureFrame.setBounds(650,350,300,250);
 			
 			JButton newItem = new JButton();
 			newItem.setLayout(new FlowLayout());
@@ -426,15 +456,28 @@ public class RestaurantMenu {
 		});
 	}
 	
-	private void login() {
+	private void login()
+	{
 		loginFrame.setBounds(100, 100, 450, 300);
 		loginFrame.pack();
 		loginFrame.setSize(500,600);
 		loginFrame.setVisible(true);
 		JPanel loginFields = new JPanel();
 		JLabel newLogin = new JLabel("LOGIN");
+		
+		JLabel userLabel = new JLabel("User:");
+		userLabel.setBounds(10,20,80,25);
+		loginFields.add(userLabel);
+		JLabel passwordLabel = new JLabel("Password:");
+		passwordLabel.setBounds(10, 50, 80, 25);
+		loginFields.add(passwordLabel);
+		
 		JTextField usernameField = new JTextField(25);
+		usernameField.setBounds(10,20,80,25);
+		
 		JTextField passwordField = new JTextField(25);
+		passwordField.setBounds(10,50,80,25);
+		
 		JButton enter = new JButton("Enter");
 		loginFrame.add(loginFields);
 		loginFields.add(usernameField);
@@ -455,7 +498,27 @@ public class RestaurantMenu {
 				initialize(newCustomer);
 			}
 		});
-
+	}
+	
+	//payment information
+	private void Payment()
+	{
+		PaymentFrame = new JFrame("Payment Information");
+		PaymentFrame.setBounds(100, 100, 450, 300);
+		PaymentFrame.pack();
+		PaymentFrame.setSize(500,600);
+		PaymentFrame.setVisible(true);
+		JPanel PaymentPanel = new JPanel();
+		JLabel newPayment = new JLabel("PAY");
+		JTextField address = new JTextField(25);
+		JTextField card = new JTextField(25);
+		JTextField coupon = new JTextField(25);
+		JButton enter = new JButton("Enter");
+		PaymentFrame.add(PaymentPanel);
+		PaymentPanel.add(address);
+		PaymentPanel.add(card);
+		PaymentPanel.add(coupon);
+		PaymentPanel.add(enter);
 	}
 	
 }
